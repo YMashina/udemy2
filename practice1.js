@@ -6,7 +6,7 @@ const personalMovieDB = {
     privat: false,
 };
 
-let ask = (question) => {
+const ask = (question) => {
     let variable = null;
     variable = prompt(question,'');
     if (variable === null || variable.length > 50)
@@ -15,13 +15,27 @@ let ask = (question) => {
         return variable;
 }
 
-personalMovieDB.count = ask('Сколько фильмов вы уже посмотрели?');
+personalMovieDB.count = +ask('Сколько фильмов вы уже посмотрели?');
 
 for (let i = 0; i < personalMovieDB.count; i++) {
-    let movieName = ask(`Введите фильм #${i+1} из ${personalMovieDB.count}`);
+    const movieName = ask(`Введите фильм #${i+1} из ${personalMovieDB.count}`);
 
     personalMovieDB.movies[movieName] = ask(`Оцените фильм "${movieName}"`);
 }
-console.log(personalMovieDB);
 
+const showMyDb = () => {
+    if (personalMovieDB.privat === false)
+        console.log(personalMovieDB);
+};
 
+showMyDb();
+
+const writeYourGenres = () => {
+    for (let i = 0; i < 3; i++){
+        personalMovieDB.genres[i] = ask(`Ваш любимый жанр под номером #${i+1}`);
+    }
+};
+
+writeYourGenres();
+
+showMyDb();
