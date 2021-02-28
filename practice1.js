@@ -4,38 +4,42 @@ const personalMovieDB = {
     actors: {},
     genres: [],
     privat: false,
-};
+    ask(question) {
+        let variable = null;
+        variable = prompt(question,'');
+        if (variable === null || variable.length > 50 || variable.length === 0)
+            this.ask(question);
+        else
+            return variable;
+    },
+    showMyDb() {
+        if (this.privat === false)
+            console.log(this);
+        else
+            console.log('DB is private');
+    },
+    writeYourGenres() {
+        for (let i = 0; i < 3; i++){
+            this.genres[i] = this.ask(`Ваш любимый жанр под номером #${i + 1}`);
+        }
+        this.genres.forEach((element, index) => {console.log(`Любимый жанр #${index + 1} - ${element}`)})
+    },
+    fillDb() {
+        for (let i = 0; i < this.count; i++) {
+            const movieName = this.ask(`Введите фильм #${i+1} из ${this.count}`);
 
-const ask = (question) => {
-    let variable = null;
-    variable = prompt(question,'');
-    if (variable === null || variable.length > 50)
-        return ask(question);
-    else
-        return variable;
-}
-
-personalMovieDB.count = +ask('Сколько фильмов вы уже посмотрели?');
-
-for (let i = 0; i < personalMovieDB.count; i++) {
-    const movieName = ask(`Введите фильм #${i+1} из ${personalMovieDB.count}`);
-
-    personalMovieDB.movies[movieName] = ask(`Оцените фильм "${movieName}"`);
-}
-
-const showMyDb = () => {
-    if (personalMovieDB.privat === false)
-        console.log(personalMovieDB);
-};
-
-showMyDb();
-
-const writeYourGenres = () => {
-    for (let i = 0; i < 3; i++){
-        personalMovieDB.genres[i] = ask(`Ваш любимый жанр под номером #${i+1}`);
+            this.movies[movieName] = this.ask(`Оцените фильм "${movieName}"`);
+        }
+    },
+    toggleVisibleMyDb () {
+        this.privat ? this.privat = false : this.privat = true;
     }
 };
 
-writeYourGenres();
+personalMovieDB.count = +personalMovieDB.ask('Сколько фильмов вы уже посмотрели?');
 
-showMyDb();
+personalMovieDB.fillDb();
+
+personalMovieDB.showMyDb();
+
+personalMovieDB.writeYourGenres();
